@@ -1,16 +1,16 @@
 <script>
     import Task from "./task.svelte";
 
-    export let changeWindow;
-    export let changeDone;
     export let tasks;
+    
+    export let changeDone;
 </script>
 <div class="container mt-5">
     <div class="d-flex justify-content-end">
-        <button 
+        <a 
             type="button" 
             class="btn btn-outline-light"
-            on:click={() => changeWindow() }>Créer une tâche</button>
+            href="/create">Créer une tâche</a>
     </div>
 </div>
 {#each tasks as task, index}

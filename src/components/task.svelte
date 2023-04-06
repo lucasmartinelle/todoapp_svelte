@@ -25,13 +25,28 @@
 
 <div class="container shadow-lg p-4 mt-4 task-card {card_type}">
     <div class="d-flex gap-3">
-        <input 
-            type="checkbox" 
-            name="done" 
-            id="done" 
-            class="form-check-input" 
-            checked="{is_done}"
-            on:change={() => changeDone(index)}>
+        <div>
+            <input 
+                type="checkbox" 
+                name="done" 
+                id="done" 
+                class="form-check-input" 
+                checked="{is_done}"
+                on:change={() => changeDone(index)}>
+            <a 
+                type="button" 
+                class="btn btn-outline-light d-flex justify-content-center mt-2 p-1"
+                href="/edit/{index}">
+                <span class="material-symbols-outlined">
+                    edit
+                </span>
+            </a>
+            <button type="button" class="btn btn-outline-light d-flex justify-content-center mt-2 p-1">
+                <span class="material-symbols-outlined">
+                    delete
+                </span>
+            </button>
+        </div>
         <div class="container text-start">
             <div class="d-flex justify-content-between">
                 <h5 class="fw-bold">{#if is_done}<del>{task.titre}</del>{:else}{task.titre}{/if}</h5>

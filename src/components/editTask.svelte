@@ -1,10 +1,7 @@
 <script>
-    export let addTask;
-
-    let titre;
-    let description;
-    let dateEcheance;
-    let priorite = 3;
+    export let task;
+    export let index;
+    export let editTask;
 </script>
 <div class="container mt-5">
     <div class="d-flex justify-content-end">
@@ -25,6 +22,7 @@
                     name="titre" 
                     id="titre" 
                     class="form-control bg-transparent text-white"
+                    value={task.titre}
                     on:change={(event) => titre = event.target.value}>
             </div>
         </div>
@@ -36,6 +34,7 @@
                     name="dateEcheance" 
                     id="dateEcheance" 
                     class="form-control bg-transparent text-white"
+                    value={task.dateEcheance}
                     on:change={(event) => dateEcheance = event.target.value}>
             </div>
         </div>
@@ -45,6 +44,7 @@
                 <select 
                     name="priorite" 
                     class="form-control bg-transparent text-white"
+                    value={task.priorite}
                     on:change={(event) => priorite = event.target.value}>
                     <option value="3" class="text-dark">Peu attendre</option>
                     <option value="2" class="text-dark">A traiter lorsque c'est possible</option>
@@ -61,15 +61,15 @@
                     id="description" 
                     class="form-control bg-transparent text-white"
                     rows="10"
-                    on:change={(event) => description = event.target.value}></textarea>
+                    on:change={(event) => description = event.target.value}>{task.description}</textarea>
             </div>
         </div>
         <div class="col-12 text-center mb-4">
             <button 
                 type="submit"
                 class="btn btn-outline-light"
-                on:click={() => addTask(titre, description, dateEcheance, priorite)}>
-                Créer   
+                on:click={() => editTask(index, titre, description, dateEcheance, priorite)}>
+                Modifier   
             </button> 
         </div>
     </form>

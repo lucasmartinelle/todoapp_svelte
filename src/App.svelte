@@ -1,15 +1,61 @@
 <script>
-	import svelteLogo from "./assets/svelte.svg";
+	// @ts-ignore
+	import { Router, links, Route } from "svelte-routing";
+    import EditTask from "./components/editTask.svelte";
     import CreateTask from "./components/createTask.svelte";
     import ListTask from "./components/listTask.svelte";
-	import viteLogo from "/vite.svg";
 
-	let tasks = [];
+	let tasks = [
+		{
+			titre: "Tâche test numéro 1",
+			description: "Cette tâche est la tâche test numéro 1",
+			dateEcheance: "28-04-2023", 
+			priorite: '0',
+			done: false,
+		},
+		{
+			titre: "Tâche test numéro 2",
+			description: "Cette tâche est la tâche test numéro 2",
+			dateEcheance: "28-04-2023", 
+			priorite: '3',
+			done: false,
+		},
+		{
+			titre: "Tâche test numéro 3",
+			description: "Cette tâche est la tâche test numéro 3",
+			dateEcheance: "28-04-2023", 
+			priorite: '1',
+			done: false,
+		}
+	];
+
 	let window = "listTask";
 
 	const changeDone = (index) => {
 		const newTasks = [...tasks]; // copie du tableau
 		newTasks[index] = { ...newTasks[index], done: !newTasks[index].done };
+
+		// Todo
+		tasks = newTasks;
+	};
+
+	const changeWindow = () => {
+		if(window == "listTask"){
+			window = "createTask";
+		} else {
+			window = "listTask";
+		}
+	}
+
+	const editTask = (index, titre, description, dateEcheance, priorite) => {
+		const newTasks = [...tasks]; // copie du tableau
+		newTasks[index] = {
+			titre: titre,
+			description: description,
+			dateEcheance: dateEcheance, 
+			priorite: priorite,
+			done: false,
+		};
 
 		// Todo
 		tasks = newTasks;
@@ -27,26 +73,24 @@
 		tasks.sort((a, b) => (a.priorite > b.priorite) ? 1 : ((a.priorite < b.priorite) ? -1 : 0));
 		changeWindow();
 	};
-
-	const changeWindow = () => {
-		if(window == "listTask"){
-			window = "createTask";
-		} else {
-			window = "listTask";
-		}
-	}
 </script>
 
-<main>
-	<div class="container-fluid">
-		<h1 class="text-white fw-bold ff-poppins">TODO List pour les étudiants</h1>
-		<h4 class="text-white fw-bold ff-montserrat">Vous n'oublierez plus jamais vos devoirs</h4>
-	</div>
-	{#if window == "listTask"}
-		<ListTask {tasks} {changeDone} {changeWindow} />
-	{:else if window == "createTask" }
-		<CreateTask {changeWindow} {addTask} />
-	{/if}
+<main use:links>
+	<Router url="">
+		<div class="container-fluid">
+			<h1 class="text-white fw-bold ff-poppins">TODO List pour les étudiants</h1>
+			<h4 class="text-white fw-bold ff-montserrat">Vous n'oublierez plus jamais vos devoirs</h4>
+		</div>
+		<Route path="/">
+			<ListTask tasks={tasks} changeDone={changeDone} />
+		</Route>
+		<Route path="/create">
+			<CreateTask addTask={addTask} />	
+		</Route>
+		<Route path="/edit/:index" let:params>
+			<EditTask task={tasks[params.index]} index={params.index} editTask={editTask} />
+		</Route>
+	</Router>
 </main>
 
 <style>
