@@ -4,7 +4,8 @@
     export let changeDone;
 
     let card_type;
-    let task_done = (task.done) ? true : false;
+    let is_done;
+    $: is_done = (task.done) ? true : false;
     
     switch(task.priorite){
         case '0':
@@ -29,11 +30,11 @@
             name="done" 
             id="done" 
             class="form-check-input" 
-            checked="{task_done}"
+            checked="{is_done}"
             on:change={() => changeDone(index)}>
         <div class="container text-start">
             <div class="d-flex justify-content-between">
-                <h5 class="fw-bold">{task.titre}</h5>
+                <h5 class="fw-bold">{#if is_done}<del>{task.titre}</del>{:else}{task.titre}{/if}</h5>
                 <p class="fw-bold">{task.dateEcheance}</p>
             </div>
             <p class="text-justify">{task.description}</p>
