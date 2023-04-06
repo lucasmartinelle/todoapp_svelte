@@ -17,3 +17,5 @@ cd todoapp_svelte
 npm install
 npm run dev
 ```
+
+![](https://zupimages.net/up/23/14/ja4c.png)
