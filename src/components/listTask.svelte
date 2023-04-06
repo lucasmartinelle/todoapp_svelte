@@ -2,8 +2,9 @@
     import Task from "./task.svelte";
 
     export let tasks;
-    
+
     export let changeDone;
+    export let showModalDeleteTask;
 </script>
 <div class="container mt-5">
     <div class="d-flex justify-content-end">
@@ -14,5 +15,5 @@
     </div>
 </div>
 {#each tasks as task, index}
-    <Task {task} {index} {changeDone} />
+    <Task {task} {index} {changeDone} {showModalDeleteTask} />
 {/each}

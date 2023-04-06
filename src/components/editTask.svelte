@@ -2,6 +2,11 @@
     export let task;
     export let index;
     export let editTask;
+
+    let titre = task.titre;
+    let description = task.description;
+    let dateEcheance = task.dateEcheance;
+    let priorite = task.priorite;
 </script>
 <div class="container mt-5">
     <div class="d-flex justify-content-end">
@@ -22,7 +27,7 @@
                     name="titre" 
                     id="titre" 
                     class="form-control bg-transparent text-white"
-                    value={task.titre}
+                    value={titre}
                     on:change={(event) => titre = event.target.value}>
             </div>
         </div>
@@ -34,7 +39,7 @@
                     name="dateEcheance" 
                     id="dateEcheance" 
                     class="form-control bg-transparent text-white"
-                    value={task.dateEcheance}
+                    value={dateEcheance}
                     on:change={(event) => dateEcheance = event.target.value}>
             </div>
         </div>
@@ -44,7 +49,7 @@
                 <select 
                     name="priorite" 
                     class="form-control bg-transparent text-white"
-                    value={task.priorite}
+                    value={priorite}
                     on:change={(event) => priorite = event.target.value}>
                     <option value="3" class="text-dark">Peu attendre</option>
                     <option value="2" class="text-dark">A traiter lorsque c'est possible</option>
@@ -61,7 +66,7 @@
                     id="description" 
                     class="form-control bg-transparent text-white"
                     rows="10"
-                    on:change={(event) => description = event.target.value}>{task.description}</textarea>
+                    on:change={(event) => description = event.target.value}>{description}</textarea>
             </div>
         </div>
         <div class="col-12 text-center mb-4">
