@@ -18,7 +18,7 @@
     </div>
 </div>
 <div class="container p-4">
-    <form class="row" method="POST">
+    <div class="row">
         <div class="col-12 mb-4">
             <div class="form-group text-start">
                 <label for="titre" class="text-white fw-bold">Titre de la tâche</label>
@@ -77,7 +77,7 @@
                 Modifier   
             </button> 
         </div>
-    </form>
+    </div>
 </div>
 
 <style>

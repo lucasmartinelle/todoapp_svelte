@@ -16,23 +16,26 @@
 		{
 			titre: "Tâche test numéro 1",
 			description: "Cette tâche est la tâche test numéro 1",
-			dateEcheance: "28-04-2023", 
+			dateEcheance: "2023-04-28", 
 			priorite: '0',
 			done: false,
+			show: true
 		},
 		{
 			titre: "Tâche test numéro 2",
 			description: "Cette tâche est la tâche test numéro 2",
-			dateEcheance: "28-04-2023", 
+			dateEcheance: "2023-04-24", 
 			priorite: '3',
 			done: false,
+			show: true
 		},
 		{
 			titre: "Tâche test numéro 3",
 			description: "Cette tâche est la tâche test numéro 3",
-			dateEcheance: "28-04-2023", 
+			dateEcheance: "2023-04-20", 
 			priorite: '1',
 			done: false,
+			show: true
 		}
 	];
 
@@ -59,11 +62,11 @@
 			dateEcheance: dateEcheance, 
 			priorite: priorite,
 			done: false,
+			show: true
 		};
 
 		// Todo
 		tasks = newTasks;
-		navigate("/");
 	};
 
 	const addTask = (titre, description, dateEcheance, priorite) => {
@@ -73,22 +76,75 @@
 			dateEcheance: dateEcheance, 
 			priorite: priorite,
 			done: false,
+			show: true
 		};
-		tasks = [...tasks, task];
-		tasks.sort((a, b) => (a.priorite > b.priorite) ? 1 : ((a.priorite < b.priorite) ? -1 : 0));
-		navigate("/");
+		const newTasks = [...tasks, task];
+		newTasks.sort((a, b) => (a.priorite > b.priorite) ? 1 : ((a.priorite < b.priorite) ? -1 : 0));
+		tasks = newTasks;
 	};
 
 	const deleteTask = (task) => {
 		toggle();
-		tasks = tasks.filter((cur) => task != cur);
-		tasks.sort((a, b) => (a.priorite > b.priorite) ? 1 : ((a.priorite < b.priorite) ? -1 : 0));
+		let newTasks = [...tasks];
+		newTasks = newTasks.filter((cur) => task != cur);
+		newTasks.sort((a, b) => (a.priorite > b.priorite) ? 1 : ((a.priorite < b.priorite) ? -1 : 0));
+		tasks = newTasks;
+	}
+
+	const filterTask = (titre, dateEcheance, status) => {
+		const newTasks = [...tasks];
+		newTasks.forEach((task) => task.show = true);
+		if(titre != undefined && titre != ""){
+			newTasks.forEach((task) => {
+				if(task.titre.indexOf(titre) == -1){
+					task.show = false;
+				}
+			});
+		}
+
+		if(dateEcheance != undefined && dateEcheance != ""){
+			console.log(dateEcheance);
+			newTasks.forEach((task) => {
+				if(task.dateEcheance != dateEcheance){
+					task.show = false;
+				}
+			});
+		}
+
+		if(status != undefined && status != "" && status != "*"){
+			newTasks.forEach((task) => {
+				if(status == "a_faire" && task.done == true){
+					task.show = false;
+				} else if(status == "fait" && task.done == false){
+					task.show = false;
+				}
+			});
+		}
+
+		tasks = newTasks;
+	}
+
+	const sortTask = (sortOption) => {
+		let newTasks = [...tasks];
+		switch(sortOption){
+			case "urgence":
+				newTasks.sort((a, b) => (a.dateEcheance < b.dateEcheance) ? 1 : ((a.dateEcheance > b.dateEcheance) ? -1 : 0));
+				break;
+			case "status":
+				newTasks.sort((a, b) => (a.done == true && b.done == false) ? 1 : ((a.done == false && b.done == true) ? -1 : 0));
+				break;
+			default:
+				newTasks.sort((a, b) => (a.priorite > b.priorite) ? 1 : ((a.priorite < b.priorite) ? -1 : 0));
+				break;
+		}
+		tasks = newTasks;
 	}
 
 	const showModalDeleteTask = (task) => {
 		taskToDelete = task;
 		toggle();
 	}
+	
 </script>
 
 <main use:links>
@@ -98,10 +154,16 @@
 	</div>
 	<Router url="">
 		<Route path="/">
-			<ListTask tasks={tasks} changeDone={changeDone} showModalDeleteTask={showModalDeleteTask} />
+			<ListTask 
+				tasks={tasks} 
+				changeDone={changeDone} 
+				showModalDeleteTask={showModalDeleteTask} 
+				filterTask={filterTask} 
+				sortTask={sortTask} />
 		</Route>
 		<Route path="/create">
-			<CreateTask addTask={addTask} />	
+			<CreateTask 
+				addTask={addTask} />	
 		</Route>
 		<Route path="/edit/:index" let:params>
 			<EditTask task={tasks[params.index]} index={params.index} editTask={editTask} />
