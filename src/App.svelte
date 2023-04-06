@@ -41,11 +41,21 @@
 
 	tasks.sort((a, b) => (a.priorite > b.priorite) ? 1 : ((a.priorite < b.priorite) ? -1 : 0));
 
+	/**
+	 * delete modal
+	 */
 	let taskToDelete = null;
-
 	let open = false;
 	const toggle = () => (open = !open)
 
+	const showModalDeleteTask = (task) => {
+		taskToDelete = task;
+		toggle();
+	}
+
+	/**
+	 * tasks method
+	 */
 	const changeDone = (index) => {
 		const newTasks = [...tasks]; // copie du tableau
 		newTasks[index] = { ...newTasks[index], done: !newTasks[index].done };
@@ -139,12 +149,6 @@
 		}
 		tasks = newTasks;
 	}
-
-	const showModalDeleteTask = (task) => {
-		taskToDelete = task;
-		toggle();
-	}
-	
 </script>
 
 <main use:links>
@@ -171,7 +175,6 @@
 	</Router>
 	
 	<!-- Delete task -->
-	
 	<Modal isOpen={open} {toggle}>
 		<ModalHeader {toggle}>Supprimer la tâche <span class="text-danger">{#if taskToDelete != null}{taskToDelete.titre}{/if}</ModalHeader>
 		<ModalBody>
