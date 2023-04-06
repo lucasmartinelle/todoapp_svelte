@@ -1,47 +1,60 @@
 <script>
-  import svelteLogo from './assets/svelte.svg'
-  import viteLogo from '/vite.svg'
-  import Counter from './lib/Counter.svelte'
+	import svelteLogo from "./assets/svelte.svg";
+    import CreateTask from "./components/createTask.svelte";
+    import ListTask from "./components/listTask.svelte";
+	import viteLogo from "/vite.svg";
+
+	let tasks = [];
+	let window = "listTask";
+
+	const changeDone = (index) => {
+		const newTasks = [...tasks]; // copie du tableau
+		newTasks[index] = { ...newTasks[index], done: !newTasks[index].done };
+
+		// Todo
+		tasks = newTasks;
+	};
+
+	const addTask = (titre, description, dateEcheance, priorite) => {
+		const task = {
+			titre: titre,
+			description: description,
+			dateEcheance: dateEcheance, 
+			priorite: priorite,
+			done: false,
+		};
+		tasks = [...tasks, task];
+		tasks.sort((a, b) => (a.priorite > b.priorite) ? 1 : ((a.priorite < b.priorite) ? -1 : 0));
+		changeWindow();
+	};
+
+	const changeWindow = () => {
+		if(window == "listTask"){
+			window = "createTask";
+		} else {
+			window = "listTask";
+		}
+	}
 </script>
 
 <main>
-  <div>
-    <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-      <img src={viteLogo} class="logo" alt="Vite Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank" rel="noreferrer">
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
-  </div>
-  <h1>Vite + Svelte</h1>
-
-  <div class="card">
-    <Counter />
-  </div>
-
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
-
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
-  </p>
+	<div class="container-fluid">
+		<h1 class="text-white fw-bold ff-poppins">TODO List pour les étudiants</h1>
+		<h4 class="text-white fw-bold ff-montserrat">Vous n'oublierez plus jamais vos devoirs</h4>
+	</div>
+	{#if window == "listTask"}
+		<ListTask {tasks} {changeDone} {changeWindow} />
+	{:else if window == "createTask" }
+		<CreateTask {changeWindow} {addTask} />
+	{/if}
 </main>
 
 <style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
-  }
+	.ff-montserrat {
+		font-family: 'Montserrat', sans-serif;
+	}
+
+	.ff-poppins {
+		font-family: 'Poppins', sans-serif;
+	}
 </style>
