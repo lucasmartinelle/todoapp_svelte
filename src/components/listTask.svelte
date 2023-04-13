@@ -1,12 +1,13 @@
 <script>
+	import { tasksStore, filterTask, sortTask, sortByPriorite } from '../stores/tasks.js';
     import Task from "./task.svelte";
 
-    export let tasks;
-
-    export let changeDone;
     export let showModalDeleteTask;
-    export let filterTask;
-    export let sortTask;
+
+    let tasks = [];
+    tasksStore.subscribe((value) => tasks = value);
+    sortByPriorite();
+
 
     let titre;
     let dateEcheance;
@@ -75,7 +76,7 @@
             <button 
                 type="button"
                 class="btn btn-outline-light me-3"
-                on:click={() => filterTask(titre, dateEcheance, status)}>
+                on:click={function(){ filterTask(titre, dateEcheance, status); } }>
                 Fitrer
             </button>
             <button 
@@ -89,7 +90,7 @@
 </div>
 {#each tasks as task, index}
     {#if task.show }
-        <Task {task} {index} {changeDone} {showModalDeleteTask} />
+        <Task {index} {showModalDeleteTask} />
     {/if}
 {/each}
 <table class="text-white m-auto mt-4" cellpadding="5px" cellspacing="0">

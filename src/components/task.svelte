@@ -1,14 +1,20 @@
 <script type="text/javascript">
-    export let task;
+	import { tasksStore, changeDone } from '../stores/tasks.js';
+
     export let index;
-    export let changeDone;
     export let showModalDeleteTask;
 
+    
+    let tasks = [];
+    tasksStore.subscribe((value) => tasks = value);
+
+    let task;
     let card_type;
     let is_done;
-    $: is_done = (task.done) ? true : false;
     
     $: {
+        task = tasks[index];
+        is_done = (task.done) ? true : false;
         switch(task.priorite){
             case '0':
                 card_type = "task-card-prio0";

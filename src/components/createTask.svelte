@@ -1,5 +1,5 @@
 <script>
-    export let addTask;
+	import { addTask } from '../stores/tasks.js';
 
     let titre;
     let description;

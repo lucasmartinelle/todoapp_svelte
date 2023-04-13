@@ -1,7 +1,11 @@
 <script>
-    export let task;
+	import { tasksStore, editTask } from '../stores/tasks.js';
+    
     export let index;
-    export let editTask;
+
+    let tasks = [];
+    tasksStore.subscribe((value) => tasks = value);
+    let task = tasks[index];
 
     let titre = task.titre;
     let description = task.description;
